@@ -1,9 +1,10 @@
 import Navbar from '../components/Navbar';
+import PageTransition from '../components/PageTransition';
 import { Mail, Send, MessageCircle, Users } from 'lucide-react';
 
 const Community = () => {
   return (
-    <div className="min-h-screen bg-black text-white">
+    <PageTransition className="min-h-screen bg-black text-white">
       <Navbar />
 
       <main className="max-w-5xl mx-auto px-6 py-32">
@@ -65,7 +66,7 @@ const Community = () => {
           Building a respectful academic community — step by step.
         </div>
       </main>
-    </div>
+    </PageTransition>
   );
 };
 

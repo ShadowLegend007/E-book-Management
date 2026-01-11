@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import PDFPreviewModal from '../../components/PDFPreviewModal';
 import { FileText, Heart, Share2, ArrowLeft, Loader2, Lock } from 'lucide-react';
+import PageTransition from '../../components/PageTransition';
 
 const API_BASE_URL = 'http://localhost:8000/api';
 
@@ -105,7 +106,7 @@ const NoteDetailsPage = () => {
 
     if (error || !note) {
         return (
-            <div className="min-h-screen bg-black text-white">
+            <PageTransition className="min-h-screen bg-black text-white">
                 <Navbar />
                 <div className="flex flex-col justify-center items-center h-[calc(100vh-80px)] space-y-4">
                     <h2 className="text-2xl font-bold text-red-500">{error || "Note not found"}</h2>
@@ -113,7 +114,7 @@ const NoteDetailsPage = () => {
                         Back to Library
                     </button>
                 </div>
-            </div>
+            </PageTransition>
         );
     }
 
@@ -122,7 +123,7 @@ const NoteDetailsPage = () => {
     const notePdf = note.bookFile ? `${API_BASE_URL.replace('/api', '')}${note.bookFile}` : '';
 
     return (
-        <div className="min-h-screen bg-black text-white">
+        <PageTransition className="min-h-screen bg-black text-white">
             <Navbar />
 
             {showPreview && notePdf && (
@@ -172,7 +173,7 @@ const NoteDetailsPage = () => {
                             )}
 
                             <div className="grid grid-cols-1 gap-3">
-                                <button 
+                                <button
                                     onClick={toggleFavorite}
                                     className={`py-3 border text-white rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition-colors flex items-center justify-center gap-2 ${isFavorite ? 'bg-red-500/20 border-red-500 text-red-500' : 'bg-[#111] border-white/10'}`}
                                 >
@@ -222,7 +223,7 @@ const NoteDetailsPage = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </PageTransition>
     );
 };
 

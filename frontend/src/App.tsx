@@ -13,11 +13,16 @@ import NoteDetailsPage from './pages/Notes/NoteDetailsPage'
 import UploadResource from './pages/UploadResource'
 import MaintenancePage from './pages/MaintenancePage'
 import CommunityPage from './pages/Community'
+import SplashScreen from './components/SplashScreen'
+import About from './pages/About'
 import { ToastContainer, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProtectedRoute from './components/ProtectedRoute'
+import { useState } from 'react';
 
 const App = () => {
+  const [showSplash, setShowSplash] = useState(true);
+
   // Shared Toast Config
   const toastOptions = {
     position: "top-center" as const,
@@ -28,34 +33,45 @@ const App = () => {
     progressClassName: "bg-linear-to-r from-blue-600 to-indigo-600 h-1",
   };
 
+
   return (
     <>
-      <Routes>
-        <Route path="/" element={
-          <>
-            <Navbar />
-            <Home />
-          </>
-        } />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/books" element={<BooksPage />} />
-        <Route path="/books/:id" element={<BookDetailsPage />} />
-        <Route path="/notes" element={<NotesPage />} />
-        <Route path="/notes/:id" element={<NoteDetailsPage />} />
-        <Route path="/upload" element={<UploadResource />} />
-        <Route path="/community" element={<CommunityPage />} />
-        <Route path="/admin" element={
-          <ProtectedRoute requiredRole="admin">
-            <AdminPanel />
-          </ProtectedRoute>
-        } />
-        
-    
-        <Route path="/maintenance" element={<MaintenancePage />} />
-      </Routes>
+      {showSplash ? (
+        <SplashScreen onComplete={() => setShowSplash(false)} />
+      ) : (
+        <Routes>
+          <Route path="/" element={
+            <>
+              <Navbar />
+              <Home />
+            </>
+          } />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/books" element={<BooksPage />} />
+          <Route path="/books/:id" element={<BookDetailsPage />} />
+          <Route path="/notes" element={<NotesPage />} />
+          <Route path="/notes/:id" element={<NoteDetailsPage />} />
+          <Route path="/upload" element={<UploadResource />} />
+          <Route path="/community" element={<CommunityPage />} />
+          <Route path="/about" element={
+            <>
+              <Navbar />
+              <About />
+            </>
+          } />
+          <Route path="/admin" element={
+            <ProtectedRoute requiredRole="admin">
+              <AdminPanel />
+            </ProtectedRoute>
+          } />
+
+
+          <Route path="/maintenance" element={<MaintenancePage />} />
+        </Routes>
+      )}
       <ToastContainer {...toastOptions} />
     </>
   );

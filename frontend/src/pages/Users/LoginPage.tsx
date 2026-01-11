@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { login, setToken, setUser } from "../../services/authService";
+import PageTransition from "../../components/PageTransition";
 
 const LoadingPage = () => {
   return (
@@ -58,7 +59,7 @@ const LoginPage = () => {
   return (
     <>
       {isLoading && <LoadingPage />}
-      <div className="w-full h-screen flex bg-black text-white selection:bg-blue-500/30 selection:text-blue-200">
+      <PageTransition className="w-full h-screen flex bg-black text-white selection:bg-blue-500/30 selection:text-blue-200">
         {/* LEFT IMAGE SECTION */}
         <div className="relative w-1/2 h-full hidden md:flex overflow-hidden">
           <div className="absolute inset-0 bg-black/40 z-10" />
@@ -195,7 +196,7 @@ const LoginPage = () => {
             </p>
           </div>
         </div>
-      </div>
+      </PageTransition>
     </>
   );
 };

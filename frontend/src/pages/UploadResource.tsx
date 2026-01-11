@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Navbar from '../components/Navbar';
+import PageTransition from '../components/PageTransition';
 import { Upload, BookOpen, FileText, X, CheckCircle } from 'lucide-react';
 import axios from 'axios';
 
@@ -60,7 +61,7 @@ const UploadResource = () => {
         e.preventDefault();
 
         // Validate required fields
-        if (!formData.title || !formData.author || !formData.category || !formData.file) {
+        if (!formData.title || !formData.author || !formData.category || !formData.file || !formData.description) {
             toast.error('Please fill in all required fields and upload a file');
             return;
         }
@@ -132,7 +133,7 @@ const UploadResource = () => {
     };
 
     return (
-        <div className="min-h-screen bg-black text-white">
+        <PageTransition className="min-h-screen bg-black text-white">
             <Navbar />
 
             <div className="max-w-4xl mx-auto px-6 py-32">
@@ -207,13 +208,14 @@ const UploadResource = () => {
                     {/* Description */}
                     <div>
                         <label className="block text-sm font-bold uppercase tracking-widest text-gray-400 mb-2">
-                            Description
+                            Description <span className="text-red-500">*</span>
                         </label>
                         <textarea
                             name="description"
                             value={formData.description}
                             onChange={handleInputChange}
                             placeholder="Provide a brief description of the content"
+                            required
                             rows={4}
                             className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 focus:border-blue-500 focus:outline-none transition-colors resize-none"
                         />
@@ -414,7 +416,7 @@ const UploadResource = () => {
                     </div>
                 )}
             </div>
-        </div>
+        </PageTransition>
     );
 };
 

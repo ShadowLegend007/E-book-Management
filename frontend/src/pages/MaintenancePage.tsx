@@ -1,4 +1,5 @@
 import { Hammer, Cog, ShieldAlert, ArrowLeft } from 'lucide-react';
+import PageTransition from '../components/PageTransition';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
@@ -11,7 +12,7 @@ const MaintenancePage = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-[#020202] flex flex-col items-center justify-center p-6 relative overflow-hidden selection:bg-blue-500/30">
+        <PageTransition className="min-h-screen bg-[#020202] flex flex-col items-center justify-center p-6 relative overflow-hidden selection:bg-blue-500/30">
             {/* Atmospheric Gemini Glows */}
             <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-blue-600/10 blur-[150px] rounded-full pointer-events-none animate-pulse" />
             <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-indigo-600/10 blur-[150px] rounded-full pointer-events-none" />
@@ -77,7 +78,7 @@ const MaintenancePage = () => {
           50% { transform: translateY(-10px); }
         }
       `}</style>
-        </div>
+        </PageTransition>
     );
 };
 

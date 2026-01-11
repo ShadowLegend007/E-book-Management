@@ -2,6 +2,7 @@ import { ArrowRight, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from 'react-toastify';
+import PageTransition from "../../components/PageTransition";
 
 const ForgotPassword = () => {
     const navigate = useNavigate();
@@ -91,7 +92,7 @@ const ForgotPassword = () => {
     };
 
     return (
-        <div className="w-full h-screen flex bg-black text-white selection:bg-blue-500/30 selection:text-blue-200">
+        <PageTransition className="w-full h-screen flex bg-black text-white selection:bg-blue-500/30 selection:text-blue-200">
 
             {/* LEFT IMAGE SECTION */}
             <div className="relative w-1/2 h-full hidden md:flex overflow-hidden">
@@ -271,7 +272,7 @@ const ForgotPassword = () => {
                     </p>
                 </div>
             </div>
-        </div>
+        </PageTransition>
     );
 };
 

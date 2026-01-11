@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { User, Mail, Shield, BookOpen, Heart, Loader2 } from 'lucide-react';
 import BookCard from '../../components/books/BookCard';
 import NoteCard from '../../components/notes/NoteCard';
+import PageTransition from '../../components/PageTransition';
 
 const API_BASE_URL = 'http://localhost:8000/api';
 
@@ -37,23 +38,23 @@ const ProfilePage = () => {
                 const favoritesData = await favoritesRes.json();
 
                 if (uploadsData.success) {
-                  setMyUploads(uploadsData.resources.map((r: any) => ({
-                    ...r,
-                    imageUrl: r.coverFile ? `${API_BASE_URL.replace('/api', '')}${r.coverFile}` : (r.isABook ? 'https://via.placeholder.com/300x400?text=No+Cover' : 'https://via.placeholder.com/300x400?text=Notes'),
-                    pdfUrl: r.bookFile ? `${API_BASE_URL.replace('/api', '')}${r.bookFile}` : '#',
-                    // For uploads, we need to check if they are in favorites to set isFavorite correctly
-                    // simpler optimization: just pass isFavorite=false for now or cross-check
-                    isFavorite: favoritesData.success ? favoritesData.resources.some((f: any) => f.uploadId === r.uploadId) : false
-                  })));
+                    setMyUploads(uploadsData.resources.map((r: any) => ({
+                        ...r,
+                        imageUrl: r.coverFile ? `${API_BASE_URL.replace('/api', '')}${r.coverFile}` : (r.isABook ? 'https://via.placeholder.com/300x400?text=No+Cover' : 'https://via.placeholder.com/300x400?text=Notes'),
+                        pdfUrl: r.bookFile ? `${API_BASE_URL.replace('/api', '')}${r.bookFile}` : '#',
+                        // For uploads, we need to check if they are in favorites to set isFavorite correctly
+                        // simpler optimization: just pass isFavorite=false for now or cross-check
+                        isFavorite: favoritesData.success ? favoritesData.resources.some((f: any) => f.uploadId === r.uploadId) : false
+                    })));
                 }
 
                 if (favoritesData.success) {
-                  setFavorites(favoritesData.resources.map((r: any) => ({
-                    ...r,
-                    imageUrl: r.coverFile ? `${API_BASE_URL.replace('/api', '')}${r.coverFile}` : (r.isABook ? 'https://via.placeholder.com/300x400?text=No+Cover' : 'https://via.placeholder.com/300x400?text=Notes'),
-                    pdfUrl: r.bookFile ? `${API_BASE_URL.replace('/api', '')}${r.bookFile}` : '#',
-                    isFavorite: true
-                  })));
+                    setFavorites(favoritesData.resources.map((r: any) => ({
+                        ...r,
+                        imageUrl: r.coverFile ? `${API_BASE_URL.replace('/api', '')}${r.coverFile}` : (r.isABook ? 'https://via.placeholder.com/300x400?text=No+Cover' : 'https://via.placeholder.com/300x400?text=Notes'),
+                        pdfUrl: r.bookFile ? `${API_BASE_URL.replace('/api', '')}${r.bookFile}` : '#',
+                        isFavorite: true
+                    })));
                 }
 
             } catch (error) {
@@ -69,7 +70,7 @@ const ProfilePage = () => {
     if (!user) return null;
 
     return (
-        <div className="min-h-screen bg-black text-white pt-24 px-6 md:px-12 pb-20">
+        <PageTransition className="min-h-screen bg-black text-white pt-24 px-6 md:px-12 pb-20">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-8">
@@ -113,7 +114,7 @@ const ProfilePage = () => {
                                 </div>
                                 <div>
                                     <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Email</p>
-                                    <p className="text-lg font-medium">{user.email}</p>
+                                    <p className="text-lg font-medium break-all md:break-normal">{user.email}</p>
                                 </div>
                             </div>
 
@@ -127,24 +128,24 @@ const ProfilePage = () => {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div className="pt-6 border-t border-white/5">
-                             <h4 className="text-red-500 font-bold uppercase tracking-wider text-xs mb-4">Danger Zone</h4>
-                             <DeleteButton />
+                            <h4 className="text-red-500 font-bold uppercase tracking-wider text-xs mb-4">Danger Zone</h4>
+                            <DeleteButton />
                         </div>
                     </div>
 
                     {/* Stats / Counts - Placeholder or summary */}
                     <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="p-8 rounded-3xl bg-linear-to-br from-blue-500/10 to-transparent border border-blue-500/20 flex flex-col justify-center items-center gap-2">
-                             <BookOpen className="w-10 h-10 text-blue-400 mb-2" />
-                             <h4 className="text-4xl font-bold">{myUploads.length}</h4>
-                             <p className="text-blue-200/60 uppercase tracking-widest text-xs font-bold">Total Uploads</p>
+                            <BookOpen className="w-10 h-10 text-blue-400 mb-2" />
+                            <h4 className="text-4xl font-bold">{myUploads.length}</h4>
+                            <p className="text-blue-200/60 uppercase tracking-widest text-xs font-bold">Total Uploads</p>
                         </div>
                         <div className="p-8 rounded-3xl bg-linear-to-br from-red-500/10 to-transparent border border-red-500/20 flex flex-col justify-center items-center gap-2">
-                             <Heart className="w-10 h-10 text-red-400 mb-2" />
-                             <h4 className="text-4xl font-bold">{favorites.length}</h4>
-                             <p className="text-red-200/60 uppercase tracking-widest text-xs font-bold">Favorites Saved</p>
+                            <Heart className="w-10 h-10 text-red-400 mb-2" />
+                            <h4 className="text-4xl font-bold">{favorites.length}</h4>
+                            <p className="text-red-200/60 uppercase tracking-widest text-xs font-bold">Favorites Saved</p>
                         </div>
                     </div>
                 </div>
@@ -153,18 +154,16 @@ const ProfilePage = () => {
                 <div className="mb-8 flex items-center gap-6 border-b border-white/10">
                     <button
                         onClick={() => setActiveTab('uploads')}
-                        className={`pb-4 text-sm font-bold uppercase tracking-widest transition-all relative ${
-                            activeTab === 'uploads' ? 'text-white' : 'text-gray-500 hover:text-gray-300'
-                        }`}
+                        className={`pb-4 text-sm font-bold uppercase tracking-widest transition-all relative ${activeTab === 'uploads' ? 'text-white' : 'text-gray-500 hover:text-gray-300'
+                            }`}
                     >
                         My Uploads
                         {activeTab === 'uploads' && <span className="absolute bottom-0 left-0 w-full h-1 bg-blue-500 rounded-t-full" />}
                     </button>
                     <button
                         onClick={() => setActiveTab('favorites')}
-                        className={`pb-4 text-sm font-bold uppercase tracking-widest transition-all relative ${
-                            activeTab === 'favorites' ? 'text-white' : 'text-gray-500 hover:text-gray-300'
-                        }`}
+                        className={`pb-4 text-sm font-bold uppercase tracking-widest transition-all relative ${activeTab === 'favorites' ? 'text-white' : 'text-gray-500 hover:text-gray-300'
+                            }`}
                     >
                         Favorites
                         {activeTab === 'favorites' && <span className="absolute bottom-0 left-0 w-full h-1 bg-red-500 rounded-t-full" />}
@@ -182,9 +181,9 @@ const ProfilePage = () => {
                             myUploads.length > 0 ? (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                     {myUploads.map((item) => (
-                                        item.isABook ? 
-                                        <BookCard key={item.id} book={item} /> :
-                                        <NoteCard key={item.id} note={{...item, type: item.documentType, downloads: 0 }} />
+                                        item.isABook ?
+                                            <BookCard key={item.id} book={item} /> :
+                                            <NoteCard key={item.id} note={{ ...item, type: item.documentType, downloads: 0 }} />
                                     ))}
                                 </div>
                             ) : (
@@ -200,9 +199,9 @@ const ProfilePage = () => {
                             favorites.length > 0 ? (
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                     {favorites.map((item) => (
-                                        item.isABook ? 
-                                        <BookCard key={item.id} book={item} /> :
-                                        <NoteCard key={item.id} note={{...item, type: item.documentType, downloads: 0 }} />
+                                        item.isABook ?
+                                            <BookCard key={item.id} book={item} /> :
+                                            <NoteCard key={item.id} note={{ ...item, type: item.documentType, downloads: 0 }} />
                                     ))}
                                 </div>
                             ) : (
@@ -216,9 +215,10 @@ const ProfilePage = () => {
                     </div>
                 )}
             </div>
-        </div>
+        </PageTransition>
     );
 };
+
 
 const DeleteButton = () => {
     const navigate = useNavigate();

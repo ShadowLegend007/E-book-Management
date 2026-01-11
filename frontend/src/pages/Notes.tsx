@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import NoteCard from '../components/notes/NoteCard';
 import NoteFilter from '../components/notes/NoteFilter';
 import { Loader2 } from 'lucide-react';
+import PageTransition from '../components/PageTransition';
 
 const API_BASE_URL = 'http://localhost:8000/api';
 
@@ -125,7 +126,7 @@ const NotesPage = () => {
     }, [hasMore, loadingMore, loadMore]);
 
     return (
-        <div className="min-h-screen bg-black text-white">
+        <PageTransition className="min-h-screen bg-black text-white">
             <Navbar />
 
             <div className="max-w-7xl mx-auto px-6 py-32">
@@ -206,7 +207,7 @@ const NotesPage = () => {
                     )}
                 </div>
             </div>
-        </div>
+        </PageTransition>
     );
 };
 

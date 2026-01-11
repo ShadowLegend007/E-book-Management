@@ -4,6 +4,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import PDFPreviewModal from '../../components/PDFPreviewModal';
 import { BookOpen, Heart, Share2, ArrowLeft, Loader2, Lock } from 'lucide-react';
+import { toast } from 'react-toastify';
+import PageTransition from '../../components/PageTransition';
 
 const API_BASE_URL = 'http://localhost:8000/api';
 
@@ -106,7 +108,7 @@ const BookDetailsPage = () => {
 
     if (error || !book) {
         return (
-            <div className="min-h-screen bg-black text-white">
+            <PageTransition className="min-h-screen bg-black text-white">
                 <Navbar />
                 <div className="flex flex-col justify-center items-center h-[calc(100vh-80px)] space-y-4">
                     <h2 className="text-2xl font-bold text-red-500">{error || "Book not found"}</h2>
@@ -114,7 +116,7 @@ const BookDetailsPage = () => {
                         Back to Library
                     </button>
                 </div>
-            </div>
+            </PageTransition>
         );
     }
 
@@ -123,7 +125,7 @@ const BookDetailsPage = () => {
     const bookPdf = book.bookFile ? `${API_BASE_URL.replace('/api', '')}${book.bookFile}` : '';
 
     return (
-        <div className="min-h-screen bg-black text-white">
+        <PageTransition className="min-h-screen bg-black text-white">
             <Navbar />
 
             {showPreview && bookPdf && (
@@ -164,7 +166,7 @@ const BookDetailsPage = () => {
                             )}
 
                             <div className="grid grid-cols-1 gap-3">
-                                <button 
+                                <button
                                     onClick={toggleFavorite}
                                     className={`py-3 border text-white rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition-colors flex items-center justify-center gap-2 ${isFavorite ? 'bg-red-500/20 border-red-500 text-red-500' : 'bg-[#111] border-white/10'}`}
                                 >
@@ -200,7 +202,12 @@ const BookDetailsPage = () => {
                                 <p className="text-xs text-gray-500 uppercase tracking-widest mb-1">Year</p>
                                 <p className="font-bold">{book.year || "N/A"}</p>
                             </div>
-                            <div className="p-4 bg-[#111] rounded-2xl border border-white/5 cursor-pointer hover:bg-white/5 transition-colors group">
+                            <div
+                                onClick={() => {
+                                    navigator.clipboard.writeText(window.location.href);
+                                    toast.success("Link copied to clipboard!");
+                                }}
+                                className="p-4 bg-[#111] rounded-2xl border border-white/5 cursor-pointer hover:bg-white/5 transition-colors group">
                                 <div className="flex items-center justify-center h-full text-gray-500 group-hover:text-white">
                                     <Share2 className="w-6 h-6" />
                                 </div>
@@ -209,7 +216,7 @@ const BookDetailsPage = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </PageTransition>
     );
 };
 

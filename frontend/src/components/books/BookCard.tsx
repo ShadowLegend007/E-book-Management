@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Heart, BookOpen, Loader2 } from 'lucide-react';
+import { Heart, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface BookProps {
@@ -60,8 +60,12 @@ const BookCard = ({ book }: { book: BookProps }) => {
       {/* Image Container */}
       <div className="relative aspect-[3/4] overflow-hidden">
         <img
-          src={book.imageUrl}
+          src={book.imageUrl || 'https://via.placeholder.com/300x400?text=No+Cover'}
           alt={book.title}
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = 'https://via.placeholder.com/300x400?text=No+Cover';
+          }}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />

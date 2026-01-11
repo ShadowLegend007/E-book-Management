@@ -54,7 +54,7 @@ backend/
 ```env
 DATABASE_URL=postgresql://user:pass@host/db
 JWT_SECRET=your_jwt_secret
-PORT=8080
+PORT=8000
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your_email@gmail.com

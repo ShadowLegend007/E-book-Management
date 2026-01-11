@@ -3,6 +3,11 @@ import { Search, Book, Clock, TrendingUp, X } from 'lucide-react';
 
 const Hero = () => {
   const [isSearchActive, setIsSearchActive] = useState(false);
+  const [animateText, setAnimateText] = useState(false);
+
+  useEffect(() => {
+    setAnimateText(true);
+  }, []);
 
   // Handle ESC key to close search
   useEffect(() => {
@@ -33,11 +38,11 @@ const Hero = () => {
 
         {/* HERO TEXT: Hide when search is active */}
         <div className={`transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)] overflow-hidden ${isSearchActive ? 'max-h-0 opacity-0 mb-0 scale-95 blur-sm' : 'max-h-[500px] opacity-100 mb-12 scale-100 blur-0'}`}>
-          <h1 className="text-5xl sm:text-7xl tracking-tighter mb-8">
-            <span className="block font-bold text-white">
+          <h1 className="text-5xl sm:text-7xl tracking-tighter mb-8 overflow-hidden">
+            <span className={`block font-bold text-white transition-transform duration-1000 ease-out ${animateText ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'}`}>
               Knowledge,
             </span>
-            <span className="block font-bold text-blue-500">
+            <span className={`block font-bold text-blue-500 transition-transform duration-1000 ease-out delay-200 ${animateText ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}`}>
               simplified.
             </span>
           </h1>

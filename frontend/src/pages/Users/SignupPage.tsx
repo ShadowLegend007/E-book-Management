@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { signup } from "../../services/authService";
+import PageTransition from "../../components/PageTransition";
 
 type Role = "student" | "teacher";
 const LoadingPage = () => {
@@ -79,7 +80,7 @@ const SignupPage = () => {
   return (
     <>
       {loading && <LoadingPage />}
-      <div className="w-full h-screen flex bg-black text-white selection:bg-blue-500/30 selection:text-blue-200">
+      <PageTransition className="w-full h-screen flex bg-black text-white selection:bg-blue-500/30 selection:text-blue-200">
         {/* LEFT IMAGE SECTION */}
         <div className="relative w-1/2 h-full hidden md:flex overflow-hidden">
           <div className="absolute inset-0 bg-black/40 z-10" />
@@ -162,8 +163,8 @@ const SignupPage = () => {
                 type="button"
                 onClick={() => setRole("student")}
                 className={`flex-1 py-3 rounded-full text-sm font-medium transition-all duration-300 relative overflow-hidden ${role === "student"
-                    ? "text-white bg-gray-800"
-                    : "text-gray-500 hover:text-gray-300"
+                  ? "text-white bg-gray-800"
+                  : "text-gray-500 hover:text-gray-300"
                   }`}
               >
                 <span className="relative z-10">Student</span>
@@ -175,8 +176,8 @@ const SignupPage = () => {
                 type="button"
                 onClick={() => setRole("teacher")}
                 className={`flex-1 py-3 rounded-full text-sm font-medium transition-all duration-300 relative overflow-hidden ${role === "teacher"
-                    ? "text-white bg-gray-800"
-                    : "text-gray-500 hover:text-gray-300"
+                  ? "text-white bg-gray-800"
+                  : "text-gray-500 hover:text-gray-300"
                   }`}
               >
                 <span className="relative z-10">Teacher</span>
@@ -334,7 +335,7 @@ const SignupPage = () => {
             </p>
           </div>
         </div>
-      </div>
+      </PageTransition>
     </>
   );
 };

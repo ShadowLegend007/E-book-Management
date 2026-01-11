@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
+import { sendWelcomeEmail, sendOtpEmail } from "./utils/email.mjs";
 
 // ==========================
 // Configuration
@@ -185,6 +186,14 @@ app.post("/api/auth/signup", async (req, res) => {
     // Generate token
     const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: "7d" });
 
+    // Send Welcome Email
+    try {
+      await sendWelcomeEmail(user);
+    } catch (emailErr) {
+      console.error("Failed to send welcome email:", emailErr);
+      // Continue even if email fails
+    }
+
     res.status(201).json({
       success: true,
       message: "User created successfully",
@@ -274,14 +283,23 @@ app.delete("/api/auth/me", authMiddleware, async (req, res) => {
 app.post("/api/auth/forgot-password", async (req, res) => {
   try {
     const { email } = req.body;
-    const result = await pool.query("SELECT id FROM users WHERE email = $1", [email]);
+    const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ success: false, message: "User not found" });
     }
 
-    // In production, send email with reset link
-    res.json({ success: true, message: "Password reset email sent" });
+    const user = result.rows[0];
+
+    // Generate 4-digit OTP
+    const otp = Math.floor(1000 + Math.random() * 9000);
+    const expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+    await pool.query("UPDATE users SET otp = $1, reset_password_expiry = $2 WHERE id = $3", [otp, expiry, user.id]);
+
+    await sendOtpEmail(user, otp);
+
+    res.json({ success: true, message: "OTP sent to your email" });
   } catch (err) {
     console.error("Forgot password error:", err);
     res.status(500).json({ success: false, message: "Server error" });
@@ -289,12 +307,37 @@ app.post("/api/auth/forgot-password", async (req, res) => {
 });
 
 // Reset Password
-app.post("/api/auth/reset-password/:token", async (req, res) => {
+app.post("/api/auth/reset-password", async (req, res) => {
   try {
-    const { password } = req.body;
+    const { email, otp, password } = req.body;
+
+    if (!email || !otp || !password) {
+      return res.status(400).json({ success: false, message: "Email, OTP and password required" });
+    }
+
+    // Verify OTP
+    const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    const user = result.rows[0];
+
+    // Check if OTP matches and not expired
+    if (!user.otp || parseInt(user.otp) !== parseInt(otp)) {
+      return res.status(400).json({ success: false, message: "Invalid OTP" });
+    }
+
+    if (new Date() > new Date(user.reset_password_expiry)) {
+      return res.status(400).json({ success: false, message: "OTP expired" });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // In production, verify token and update password
+    // Update password and clear OTP
+    await pool.query("UPDATE users SET password = $1, otp = NULL, reset_password_expiry = NULL WHERE id = $2", [hashedPassword, user.id]);
+
     res.json({ success: true, message: "Password reset successful" });
   } catch (err) {
     console.error("Reset password error:", err);

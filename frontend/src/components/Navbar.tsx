@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Menu, X, BookOpen, MessageCircle, Home, FileText, User, LogIn, ArrowRight, LogOut, Shield, Mail } from 'lucide-react';
+import { Menu, X, BookOpen, MessageCircle, Home, FileText, User, LogIn, ArrowRight, LogOut, Shield, Mail, Info } from 'lucide-react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,6 +52,7 @@ const Navbar = () => {
     { name: 'Books', icon: <BookOpen className="w-4 h-4" />, href: '/books' },
     { name: 'Notes', icon: <FileText className="w-4 h-4" />, href: '/notes' },
     { name: 'Community', icon: <MessageCircle className="w-4 h-4" />, href: '/community' },
+    { name: 'About', icon: <Info className="w-4 h-4" />, href: '/about' },
   ];
 
   return (
@@ -82,6 +83,9 @@ const Navbar = () => {
                 </div>
                 <span className="font-bold text-lg tracking-[0.2em] text-white/90 uppercase">
                   EDU<span className="text-blue-500">HUB</span>
+                  {(user?.role === 'admin' || user?.role === 1 || user?.role === 2) && (
+                    <sup className="text-[10px] text-red-500 ml-1 lowercase tracking-normal">admin</sup>
+                  )}
                 </span>
               </div>
 
